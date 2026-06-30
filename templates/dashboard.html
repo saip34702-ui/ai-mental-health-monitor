@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | AI Mental Health Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🧠 AI Mental Health Monitor</div>
+    <div>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout" class="btn-small">Logout</a>
+    </div>
+</nav>
+
+<section class="dashboard">
+    <h1>Welcome, {{ name }} 👋</h1>
+    <p>Your emotional wellness dashboard is ready.</p>
+
+    <div class="dashboard-cards">
+        <div class="dash-card">
+            <h3>😊 Face Emotion</h3>
+            <p>Detect mood using webcam.</p>
+            <button>Start Detection</button>
+        </div>
+
+        <div class="dash-card">
+            <h3>📝 Text Mood</h3>
+            <p>Analyze your thoughts using AI.</p>
+            <button>Analyze Text</button>
+        </div>
+
+        <div class="dash-card">
+            <h3>🎤 Voice Mood</h3>
+            <p>Detect emotion from voice tone.</p>
+            <button>Start Voice</button>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

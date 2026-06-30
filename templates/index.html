@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Mental Health Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🧠 AI Mental Health Monitor</div>
+    <div>
+        <a href="/login">Login</a>
+        <a href="/register" class="btn-small">Register</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Your Mental Health Matters</h1>
+        <p>
+            AI-powered privacy-first system for emotion detection using
+            face, text, and voice analysis.
+        </p>
+
+        <div class="buttons">
+            <a href="/register" class="btn-primary">Get Started</a>
+            <a href="/login" class="btn-secondary">Login</a>
+        </div>
+    </div>
+
+    <div class="hero-card">
+        <h2>Today's Mood</h2>
+        <div class="emoji">😊</div>
+        <p>Emotion Detection Ready</p>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature-box">
+        <h3>😊 Face Emotion</h3>
+        <p>Detect emotions using webcam-based facial expression analysis.</p>
+    </div>
+
+    <div class="feature-box">
+        <h3>📝 Text Analysis</h3>
+        <p>Analyze mood from written thoughts using sentiment analysis.</p>
+    </div>
+
+    <div class="feature-box">
+        <h3>🎤 Voice Analysis</h3>
+        <p>Understand emotional tone from voice input and speech patterns.</p>
+    </div>
+</section>
+
+</body>
+</html>
