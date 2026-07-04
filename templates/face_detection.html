@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        Face Emotion Detection
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<div class="face-container">
+
+
+    <div class="face-card">
+
+
+        <h1>
+            😊 Face Emotion Detection
+        </h1>
+
+
+        <p>
+            Upload your face image and AI will detect your current emotion.
+        </p>
+
+
+        <form method="POST"
+              enctype="multipart/form-data">
+
+
+            <input type="file"
+                   name="image"
+                   id="imageInput"
+                   accept="image/*"
+                   required>
+
+            <p id="fileName" style="margin-top:10px;color:white;">
+                No file chosen
+            </p>
+
+            <img id="previewImage"
+                    style="display:none;width:180px;height:180px;object-fit: cover;border-radius: 20px;margin:15px auto;">
+
+
+            <button type="submit">
+                Analyze Emotion
+            </button>
+        </form>
+
+
+
+        {% if emotion %}
+
+        <div class="emotion-result">
+
+
+            <h2>
+                AI Detected Emotion
+            </h2>
+
+
+            <h1>
+                {{ emotion }}
+            </h1>
+
+
+        </div>
+
+
+        {% endif %}
+
+
+        <a href="/dashboard"
+           class="back-btn">
+            ⬅ Back Dashboard
+        </a>
+
+
+    </div>
+
+
+</div>
+
+<script>
+    const imageInput = document.getElementById("imageInput");
+    const fileName = document.getElementById("fileName");
+    const previewImage = document.getElementById("previewImage");
+
+    imageInput.addEventListener("change", function () {
+        const file = this.files[0];
+
+        if (file) {
+            fileName.textContent = file.name;
+            previewImage.src = URL.createObjectURL(file);
+            previewImage.style.display = "block";
+        } else {
+            fileName.textContent = "No file selected";
+            previewImage.style.display = "none";
+        }
+    });
+</script>
+
+
+</body>
+
+</html>

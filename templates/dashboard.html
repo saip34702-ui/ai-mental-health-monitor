@@ -18,12 +18,12 @@
 
         <h2>🧠 MindAI</h2>
 
-        <a href="#">🏠 Dashboard</a>
-        <a href="#">😊 Face AI</a>
-        <a href="#">📝 Text AI</a>
-        <a href="#">🎤 Voice AI</a>
-        <a href="#">📊 Reports</a>
-        <a href="#">⚙ Settings</a>
+        <a href="/dashboard">🏠 Dashboard</a>
+        <a href="/face_detection">😊 Face AI</a>
+        <a href="/text_analysis">📝 Text AI</a>
+        <a href="/voice_analysis">🎤 Voice AI</a>
+        <a href="/reports">📊 Reports</a>
+        <a href="/settings">⚙ Settings</a>
 
         <a href="/logout" class="logout">
             🚪 Logout
@@ -54,7 +54,7 @@
 
             <div class="card">
                 <h3>😊 Today's Mood</h3>
-                <h2>Neutral</h2>
+                <h2>{{ mood }}</h2>
                 <p>Last checked today</p>
             </div>
 
@@ -68,7 +68,7 @@
 
             <div class="card">
                 <h3>📈 Weekly Reports</h3>
-                <h2>0</h2>
+                <h2>{{ total_records }}</h2>
                 <p>Mood records</p>
             </div>
 
@@ -95,9 +95,13 @@
                     and AI face analysis.
                 </p>
 
-                <button>
-                    Start Face AI
-                </button>
+                <a href="/face_detection">
+
+                    <button>
+                     Start Face AI
+                    </button>
+
+                </a>
 
             </div>
 

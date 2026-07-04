@@ -4,12 +4,14 @@ from config import Config
 from database.db import init_db
 from routes.auth import auth
 from routes.dashboard import dashboard
+from routes.face import face
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 app.register_blueprint(auth)
 app.register_blueprint(dashboard)
+app.register_blueprint(face)
 
 
 @app.route("/")

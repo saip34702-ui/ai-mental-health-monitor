@@ -1,0 +1,21 @@
+# Virtual Environment
+venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Database
+database.db
+
+# Upload Images
+static/uploads/
+
+# Environment Variables
+.env
+
+# DeepFace models
+.deepface/
