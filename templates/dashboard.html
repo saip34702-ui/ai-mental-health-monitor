@@ -1,44 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard | AI Mental Health Monitor</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>AI Mental Health Monitor | Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
 
-<nav class="navbar">
-    <div class="logo">🧠 AI Mental Health Monitor</div>
-    <div>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/logout" class="btn-small">Logout</a>
+<div class="dashboard">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <h2>🧠 MindAI</h2>
+
+        <a href="#">🏠 Dashboard</a>
+        <a href="#">😊 Face AI</a>
+        <a href="#">📝 Text AI</a>
+        <a href="#">🎤 Voice AI</a>
+        <a href="#">📊 Reports</a>
+        <a href="#">⚙ Settings</a>
+
+        <a href="/logout" class="logout">
+            🚪 Logout
+        </a>
+
     </div>
-</nav>
 
-<section class="dashboard">
-    <h1>Welcome, {{ name }} 👋</h1>
-    <p>Your emotional wellness dashboard is ready.</p>
 
-    <div class="dashboard-cards">
-        <div class="dash-card">
-            <h3>😊 Face Emotion</h3>
-            <p>Detect mood using webcam.</p>
-            <button>Start Detection</button>
+    <!-- Main Content -->
+    <div class="main">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Welcome, {{ name }} 👋</h1>
+                <p>Your personal AI mental wellness assistant</p>
+            </div>
+
+            <div class="profile">
+                👤
+            </div>
+
         </div>
 
-        <div class="dash-card">
-            <h3>📝 Text Mood</h3>
-            <p>Analyze your thoughts using AI.</p>
-            <button>Analyze Text</button>
+
+        <!-- Status Cards -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>😊 Today's Mood</h3>
+                <h2>Neutral</h2>
+                <p>Last checked today</p>
+            </div>
+
+
+            <div class="card">
+                <h3>💙 Wellness Score</h3>
+                <h2>85%</h2>
+                <p>Healthy state</p>
+            </div>
+
+
+            <div class="card">
+                <h3>📈 Weekly Reports</h3>
+                <h2>0</h2>
+                <p>Mood records</p>
+            </div>
+
         </div>
 
-        <div class="dash-card">
-            <h3>🎤 Voice Mood</h3>
-            <p>Detect emotion from voice tone.</p>
-            <button>Start Voice</button>
+
+        <h2 class="section-title">
+            AI Analysis Tools
+        </h2>
+
+
+        <!-- AI Feature Cards -->
+        <div class="ai-tools">
+
+            <div class="tool">
+                <span>😊</span>
+
+                <h3>
+                    Face Emotion Detection
+                </h3>
+
+                <p>
+                    Detect emotions using webcam
+                    and AI face analysis.
+                </p>
+
+                <button>
+                    Start Face AI
+                </button>
+
+            </div>
+
+
+            <div class="tool">
+
+                <span>📝</span>
+
+                <h3>
+                    Text Sentiment Analysis
+                </h3>
+
+                <p>
+                    Write your thoughts and AI
+                    will understand your mood.
+                </p>
+
+                <button>
+                    Analyze Text
+                </button>
+
+            </div>
+
+
+            <div class="tool">
+
+                <span>🎤</span>
+
+                <h3>
+                    Voice Emotion Detection
+                </h3>
+
+                <p>
+                    Detect feelings from voice tone.
+                </p>
+
+                <button>
+                    Start Voice AI
+                </button>
+
+            </div>
+
+
         </div>
+
+
+        <!-- Report Section -->
+        <div class="report-box">
+
+            <h2>📊 Mood Analytics</h2>
+
+            <p>
+                Your weekly emotional health
+                graph will appear here.
+            </p>
+
+        </div>
+
+
     </div>
-</section>
+
+</div>
+
 
 </body>
 </html>

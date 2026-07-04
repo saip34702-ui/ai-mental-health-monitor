@@ -273,3 +273,142 @@ body {
         flex-direction: column;
     }
 }
+
+.dashboard {
+    min-height: 100vh;
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    padding: 30px 22px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px);
+}
+
+.sidebar h2 {
+    margin-bottom: 35px;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border-radius: 14px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.logout {
+    margin-top: 45px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.main {
+    flex: 1;
+    padding: 35px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.topbar h1 {
+    font-size: 36px;
+}
+
+.topbar p {
+    color: #e5e7eb;
+}
+
+.profile {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: white;
+    color: #1d4ed8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+}
+
+.cards,
+.ai-tools {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.card,
+.tool,
+.report-box {
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(14px);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.card h3,
+.tool h3 {
+    margin-bottom: 12px;
+}
+
+.card h2 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.card p,
+.tool p,
+.report-box p {
+    color: #d1d5db;
+    line-height: 1.5;
+}
+
+.section-title {
+    margin: 35px 0 20px;
+}
+
+.tool span {
+    font-size: 45px;
+}
+
+.tool button {
+    margin-top: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 24px;
+    background: white;
+    color: #1d4ed8;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.report-box {
+    margin-top: 30px;
+}
+
+@media (max-width: 900px) {
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .cards,
+    .ai-tools {
+        grid-template-columns: 1fr;
+    }
+}
