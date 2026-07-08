@@ -24,7 +24,7 @@ def user_dashboard():
         )
     ).fetchone()
 
-    count = conn.exexute(
+    count = conn.execute(
         """
         SELECT COUNT(*) as count
         FROM mood_records

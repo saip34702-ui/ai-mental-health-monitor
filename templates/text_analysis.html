@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text Mood Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="face-container">
+    <div class="face-card">
+
+        <h1>📝 Text Mood Analysis</h1>
+        <p>Write your thoughts and AI will analyze your mood.</p>
+
+        <form method="POST">
+            <textarea name="user_text"
+                      placeholder="Write how you feel today..."
+                      required>{{ user_text }}</textarea>
+
+            <button type="submit">Analyze Mood</button>
+        </form>
+
+        {% if emotion %}
+        <div class="emotion-result">
+            <h2>AI Detected Mood</h2>
+            <h1>{{ emotion }}</h1>
+            <p>Confidence: {{ confidence }}%</p>
+        </div>
+        {% endif %}
+
+        {% if ai_reply %}
+        <div class="emotion-result">
+            <h2>🤖 AI Wellness Response</h2>
+            <p>{{ ai_reply }}</p>
+        </div>
+        {% endif %}
+
+        <a href="/dashboard" class="back-btn">⬅ Back Dashboard</a>
+
+    </div>
+</div>
+
+</body>
+</html>

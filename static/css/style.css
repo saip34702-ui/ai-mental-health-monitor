@@ -506,3 +506,15 @@ body {
     text-decoration:none;
 
 }
+
+.face-card textarea {
+    width: 100%;
+    height: 140px;
+    padding: 15px;
+    margin: 25px 0;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    resize: none;
+    font-size: 15px;
+}
