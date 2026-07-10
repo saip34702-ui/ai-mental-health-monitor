@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Voice Emotion Analysis
+</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<div class="face-container">
+
+<div class="face-card">
+
+
+<h1>
+🎤 Voice Emotion Analysis
+</h1>
+
+
+<p>
+Click start and speak. AI will listen and analyze your emotion.
+</p>
+
+
+
+<form method="POST"
+      onsubmit="startListening()">
+
+
+<button type="submit">
+
+🎙 Start Voice Analysis
+
+</button>
+
+
+</form>
+
+
+
+<div id="liveStatus"
+     class="emotion-result"
+     style="display:none;">
+
+
+<h2>
+🎧 Listening...
+</h2>
+
+
+<p>
+Speak now, AI is hearing your voice
+</p>
+
+
+</div>
+
+
+
+
+{% if text %}
+
+<div class="emotion-result">
+
+<h2>
+📝 Converted Text
+</h2>
+
+<p>
+{{ text }}
+</p>
+
+</div>
+
+{% endif %}
+
+
+
+
+{% if emotion %}
+
+<div class="emotion-result">
+
+<h2>
+😊 AI Detected Mood
+</h2>
+
+<h1>
+{{ emotion }}
+</h1>
+
+<p>
+Confidence: {{ confidence }}%
+</p>
+
+</div>
+
+{% endif %}
+
+
+
+
+{% if ai_reply %}
+
+<div class="emotion-result">
+
+<h2>
+🤖 AI Response
+</h2>
+
+<p>
+{{ ai_reply }}
+</p>
+
+
+</div>
+
+{% endif %}
+
+
+
+
+{% if message and not text %}
+
+<div class="emotion-result">
+
+<h2>
+{{ message }}
+</h2>
+
+</div>
+
+
+{% endif %}
+
+
+
+<a href="/dashboard"
+class="back-btn">
+
+⬅ Back Dashboard
+
+</a>
+
+
+
+</div>
+
+</div>
+
+
+
+
+<script>
+
+
+function startListening(){
+
+
+document.getElementById("liveStatus").style.display="block";
+
+
+}
+
+
+</script>
+
+
+
+</body>
+
+</html>
