@@ -3,15 +3,17 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <title>
-        Face Emotion Detection
-    </title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/style.css') }}">
+<title>
+Live Face Emotion AI
+</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 
@@ -21,95 +23,676 @@
 
 <div class="face-container">
 
-
-    <div class="face-card">
-
-
-        <h1>
-            😊 Face Emotion Detection
-        </h1>
+<div class="face-card">
 
 
-        <p>
-            Upload your face image and AI will detect your current emotion.
-        </p>
+<h1>
+📷 Live Face Emotion AI
+</h1>
 
 
-        <form method="POST"
-              enctype="multipart/form-data">
-
-
-            <input type="file"
-                   name="image"
-                   id="imageInput"
-                   accept="image/*"
-                   required>
-
-            <p id="fileName" style="margin-top:10px;color:white;">
-                No file chosen
-            </p>
-
-            <img id="previewImage"
-                    style="display:none;width:180px;height:180px;object-fit: cover;border-radius: 20px;margin:15px auto;">
-
-
-            <button type="submit">
-                Analyze Emotion
-            </button>
-        </form>
+<p>
+Start camera and AI will understand your mood.
+</p>
 
 
 
-        {% if emotion %}
-
-        <div class="emotion-result">
+<div class="camera-wrapper">
 
 
-            <h2>
-                AI Detected Emotion
-            </h2>
+<video id="camera"
+       autoplay
+       playsinline>
+
+</video>
 
 
-            <h1>
-                {{ emotion }}
-            </h1>
+<canvas id="canvas"
+        style="display:none;">
 
-
-        </div>
-
-
-        {% endif %}
-
-
-        <a href="/dashboard"
-           class="back-btn">
-            ⬅ Back Dashboard
-        </a>
-
-
-    </div>
+</canvas>
 
 
 </div>
 
+
+
+
+<div class="camera-actions">
+
+
+<button type="button"
+id="startCameraBtn"
+onclick="startCamera()">
+
+📷 Start Camera
+
+</button>
+
+
+
+<button type="button"
+id="captureBtn"
+onclick="captureAndAnalyze()"
+disabled>
+
+🧠 Analyze Mood
+
+</button>
+
+
+
+<button type="button"
+id="stopCameraBtn"
+onclick="stopCamera()"
+disabled>
+
+❌ Stop Camera
+
+</button>
+
+
+</div>
+
+
+
+
+<div id="statusBox"
+class="emotion-result"
+style="display:none;">
+
+
+<h2 id="statusText">
+
+AI Processing...
+
+</h2>
+
+
+</div>
+
+
+
+
+
+<div id="supportBox"
+class="emotion-result"
+style="display:none;">
+
+
+<h2>
+💙 Talk With AI
+</h2>
+
+
+<p>
+Tell me what happened. I am listening.
+</p>
+
+
+<textarea id="userFeeling"
+placeholder="Share your feelings...">
+
+</textarea>
+
+
+
+<input type="hidden"
+id="detectedEmotion">
+
+
+
+<button type="button"
+onclick="askSupportiveAI()">
+
+🤖 Talk To AI
+
+</button>
+
+
+
+<div id="supportReply"
+class="emotion-result"
+style="display:none;">
+
+</div>
+
+
+
+</div>
+
+
+
+
+<a href="/dashboard"
+class="back-btn">
+
+⬅ Back Dashboard
+
+</a>
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+
 <script>
-    const imageInput = document.getElementById("imageInput");
-    const fileName = document.getElementById("fileName");
-    const previewImage = document.getElementById("previewImage");
 
-    imageInput.addEventListener("change", function () {
-        const file = this.files[0];
 
-        if (file) {
-            fileName.textContent = file.name;
-            previewImage.src = URL.createObjectURL(file);
-            previewImage.style.display = "block";
-        } else {
-            fileName.textContent = "No file selected";
-            previewImage.style.display = "none";
-        }
-    });
+let cameraStream = null;
+
+let aiVoice = null;
+
+
+
+function loadVoices(){
+
+
+let voices =
+window.speechSynthesis.getVoices();
+
+
+console.log(
+"Available voices:",
+voices
+);
+
+
+
+aiVoice =
+
+voices.find(
+voice =>
+voice.name.includes("Jenny") ||
+voice.name.includes("Aria") ||
+voice.name.includes("Zira")
+)
+
+||
+
+voices.find(
+voice =>
+voice.lang === "en-US"
+);
+
+
+}
+
+
+
+window.speechSynthesis.onvoiceschanged =
+loadVoices;
+
+
+
+
+
+function speakMessage(message){
+
+
+if(
+"speechSynthesis" in window
+){
+
+
+window.speechSynthesis.cancel();
+
+
+
+let speech =
+new SpeechSynthesisUtterance(
+message
+);
+
+
+
+if(aiVoice){
+
+speech.voice =
+aiVoice;
+
+}
+
+
+
+speech.lang =
+"en-US";
+
+
+// soft human voice
+
+speech.rate =
+0.82;
+
+
+speech.pitch =
+1.15;
+
+
+speech.volume =
+1;
+
+
+
+
+window.speechSynthesis.speak(
+speech
+);
+
+
+}
+
+
+}
+
+
+
+
+
+
+function getFriendlyMessage(emotion){
+
+
+let mood =
+emotion.toLowerCase();
+
+
+
+let messages = {
+
+
+happy:
+
+"You look positive today. I am happy to see that. Would you like to share what made your day good?",
+
+
+
+sad:
+
+"I noticed you might be feeling a little low today. If something happened, you can share it with me. I am here to listen.",
+
+
+
+angry:
+
+"You seem a little upset. Take your time. If you want, you can tell me what happened.",
+
+
+
+fear:
+
+"You seem worried. Take a moment and relax. You can share your thoughts with me.",
+
+
+
+neutral:
+
+"You look calm right now. How are you actually feeling today?",
+
+
+
+surprise:
+
+"Something seems to have surprised you. Would you like to talk about it?"
+
+};
+
+
+
+return messages[mood] ||
+
+"I am here with you. Tell me how you are feeling today.";
+
+}
+
+
+
+
+
+
+
+async function startCamera(){
+
+
+let video =
+document.getElementById("camera");
+
+
+try{
+
+
+cameraStream =
+await navigator.mediaDevices.getUserMedia({
+
+video:true,
+
+audio:false
+
+});
+
+
+
+video.srcObject =
+cameraStream;
+
+
+
+document.getElementById(
+"startCameraBtn"
+).disabled=true;
+
+
+document.getElementById(
+"captureBtn"
+).disabled=false;
+
+
+document.getElementById(
+"stopCameraBtn"
+).disabled=false;
+
+
+
+
+speakMessage(
+
+"Hello Sai. I am here with you. Relax and whenever you are ready we can check how you are feeling today."
+
+);
+
+
+
+}
+
+catch(error){
+
+
+alert(
+"Camera permission needed"
+);
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+function stopCamera(){
+
+
+if(cameraStream){
+
+
+cameraStream
+.getTracks()
+.forEach(
+track =>
+track.stop()
+);
+
+
+}
+
+
+
+document.getElementById(
+"camera"
+).srcObject=null;
+
+
+
+document.getElementById(
+"startCameraBtn"
+).disabled=false;
+
+
+document.getElementById(
+"captureBtn"
+).disabled=true;
+
+
+document.getElementById(
+"stopCameraBtn"
+).disabled=true;
+
+
+}
+
+
+
+
+
+
+
+
+async function captureAndAnalyze(){
+
+
+
+let video =
+document.getElementById("camera");
+
+
+let canvas =
+document.getElementById("canvas");
+
+
+let statusBox =
+document.getElementById("statusBox");
+
+
+let statusText =
+document.getElementById("statusText");
+
+
+
+canvas.width =
+video.videoWidth;
+
+
+canvas.height =
+video.videoHeight;
+
+
+
+canvas
+.getContext("2d")
+.drawImage(
+video,
+0,
+0
+);
+
+
+
+statusBox.style.display =
+"block";
+
+
+statusText.innerHTML =
+"🧠 AI is understanding your mood...";
+
+
+
+
+let imageData =
+canvas.toDataURL(
+"image/jpeg"
+);
+
+
+
+
+let response =
+await fetch(
+"/analyze_live_face",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+
+image:imageData
+
+})
+
+});
+
+
+
+
+let result =
+await response.json();
+
+
+
+
+let message =
+getFriendlyMessage(
+result.emotion
+);
+
+
+
+statusText.innerHTML =
+message;
+
+
+
+document.getElementById(
+"detectedEmotion"
+).value =
+result.emotion;
+
+
+
+document.getElementById(
+"supportBox"
+).style.display =
+"block";
+
+
+
+speakMessage(
+message
+);
+
+
+}
+
+
+
+
+
+
+
+
+async function askSupportiveAI(){
+
+
+
+let text =
+document
+.getElementById(
+"userFeeling"
+)
+.value;
+
+
+
+let emotion =
+document
+.getElementById(
+"detectedEmotion"
+)
+.value;
+
+
+
+let box =
+document.getElementById(
+"supportReply"
+);
+
+
+
+box.style.display =
+"block";
+
+
+box.innerHTML =
+"🤖 AI is thinking...";
+
+
+
+
+let response =
+await fetch(
+"/face_support_chat",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+
+message:text,
+
+emotion:emotion
+
+})
+
+});
+
+
+
+
+let result =
+await response.json();
+
+
+
+box.innerHTML =
+result.reply;
+
+
+
+speakMessage(
+result.reply
+);
+
+
+
+}
+
+
+
 </script>
+
 
 
 </body>
