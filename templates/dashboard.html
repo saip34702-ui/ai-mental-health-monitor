@@ -3,7 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>AI Mental Health Monitor | Dashboard</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MindAI | Dashboard</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
@@ -14,164 +18,854 @@
 <div class="dashboard">
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <aside class="sidebar">
 
-        <h2>🧠 MindAI</h2>
+        <div class="brand">
 
-        <a href="/dashboard">🏠 Dashboard</a>
-        <a href="/face_detection">😊 Face AI</a>
-        <a href="/text_analysis">📝 Text AI</a>
-        <a href="/voice_analysis">🎤 Voice AI</a>
-        <a href="/reports">📊 Reports</a>
-        <a href="/settings">⚙ Settings</a>
+            <div class="brand-icon">
+                🧠
+            </div>
 
-        <a href="/logout" class="logout">
-            🚪 Logout
+            <div>
+                <h2>MindAI</h2>
+                <p>Wellness Companion</p>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="/dashboard"
+               class="active">
+                <span>🏠</span>
+                Dashboard
+            </a>
+
+            <a href="/face_detection">
+                <span>😊</span>
+                Face AI
+            </a>
+
+            <a href="/text_analysis">
+                <span>📝</span>
+                Text AI
+            </a>
+
+            <a href="/voice_analysis">
+                <span>🎤</span>
+                Voice AI
+            </a>
+
+            <a href="/reports">
+                <span>📊</span>
+                Reports
+            </a>
+
+            <a href="/settings">
+                <span>⚙️</span>
+                Settings
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-support">
+
+            <div class="support-icon">
+                💙
+            </div>
+
+            <h4>Need support?</h4>
+
+            <p>
+                Talk with MindAI whenever you need
+                a calm and supportive space.
+            </p>
+
+            <a href="/text_analysis"
+               class="support-button">
+                Talk to AI
+            </a>
+
+        </div>
+
+
+        <a href="/logout"
+           class="logout">
+
+            <span>🚪</span>
+            Logout
+
         </a>
 
-    </div>
+    </aside>
 
 
     <!-- Main Content -->
-    <div class="main">
+    <main class="main">
 
-        <div class="topbar">
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="welcome-section">
+
+                <span class="greeting">
+                    👋 Welcome Back
+                </span>
+
+                <h1>{{ name }}</h1>
+
+                <p>
+                    Your AI wellness companion is ready.
+                    Take a moment to check in with yourself today.
+                </p>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button type="button"
+                        class="icon-btn"
+                        aria-label="Notifications">
+                    🔔
+                </button>
+
+                <button type="button"
+                        class="icon-btn"
+                        id="themeToggle"
+                        aria-label="Toggle theme">
+                    🌙
+                </button>
+
+                <div class="profile-card">
+
+                    <div class="profile-avatar">
+                        {{ (name[0] if name else "U") | upper }}
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong>
+                            {{ name }}
+                        </strong>
+
+                        <small>
+                            Wellness User
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Hero Section -->
+        <section class="dashboard-hero">
+
+            <div class="hero-content">
+
+                <span class="hero-label">
+                    ✨ Daily Wellness Check
+                </span>
+
+                <h2>
+                    How are you feeling today?
+                </h2>
+
+                <p>
+                    Use Face, Text, or Voice AI to understand
+                    your current emotional state and receive
+                    supportive guidance.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a href="/face_detection"
+                       class="primary-action">
+                        📷 Start Face Check
+                    </a>
+
+                    <a href="/text_analysis"
+                       class="secondary-action">
+                        💬 Talk to MindAI
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-visual">
+
+                <div class="ai-orb">
+                    🧠
+                </div>
+
+                <span class="orb-status">
+                    AI Ready
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- Summary Cards -->
+        <section class="cards">
+
+            <article class="card glass-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon mood-icon">
+                        😊
+                    </div>
+
+                    <span class="card-badge">
+                        Latest
+                    </span>
+
+                </div>
+
+                <h4>Today's Mood</h4>
+
+                <h2>{{ mood }}</h2>
+
+                <p>
+                    Latest detected emotion
+                </p>
+
+            </article>
+
+
+            <article class="card glass-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon wellness-icon">
+                        💙
+                    </div>
+
+                    <span class="card-badge positive">
+                        Good
+                    </span>
+
+                </div>
+
+                <h4>Wellness Score</h4>
+
+                <h2>{{ wellness_score }}%</h2>
+
+                <p>
+                    Based on your recent check-ins
+                </p>
+
+            </article>
+
+
+            <article class="card glass-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon analysis-icon">
+                        📊
+                    </div>
+
+                    <span class="card-badge">
+                        Total
+                    </span>
+
+                </div>
+
+                <h4>Total Analyses</h4>
+
+                <h2>{{ total_records }}</h2>
+
+                <p>
+                    Face, Text, and Voice records
+                </p>
+
+            </article>
+
+
+            <article class="card glass-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon streak-icon">
+                        🔥
+                    </div>
+
+                    <span class="card-badge positive">
+                        Active
+                    </span>
+
+                </div>
+
+                <h4>Current Streak</h4>
+
+                <h2>7 Days</h2>
+
+                <p>
+                    Keep checking in daily
+                </p>
+
+            </article>
+
+        </section>
+
+
+        <!-- AI Tools Header -->
+        <section class="section-heading">
 
             <div>
-                <h1>Welcome, {{ name }} 👋</h1>
-                <p>Your personal AI mental wellness assistant</p>
+
+                <span class="section-label">
+                    AI MODULES
+                </span>
+
+                <h2 class="section-title">
+                    AI Wellness Tools
+                </h2>
+
+                <p class="section-subtitle">
+                    Choose an AI module to understand your emotions
+                    and receive support.
+                </p>
+
             </div>
 
-            <div class="profile">
-                👤
-            </div>
+            <a href="/reports"
+               class="view-all-link">
+                View Reports →
+            </a>
 
-        </div>
-
-
-        <!-- Status Cards -->
-        <div class="cards">
-
-            <div class="card">
-                <h3>😊 Today's Mood</h3>
-                <h2>{{ mood }}</h2>
-                <p>Last checked today</p>
-            </div>
+        </section>
 
 
-            <div class="card">
-                <h3>💙 Wellness Score</h3>
-                <h2>85%</h2>
-                <p>Healthy state</p>
-            </div>
+        <!-- AI Tools -->
+        <section class="ai-tools">
 
+            <article class="tool tool-face">
 
-            <div class="card">
-                <h3>📈 Weekly Reports</h3>
-                <h2>{{ total_records }}</h2>
-                <p>Mood records</p>
-            </div>
+                <div class="tool-top">
 
-        </div>
+                    <div class="tool-icon">
+                        😊
+                    </div>
 
+                    <span class="tool-status">
+                        Live Camera
+                    </span>
 
-        <h2 class="section-title">
-            AI Analysis Tools
-        </h2>
-
-
-        <!-- AI Feature Cards -->
-        <div class="ai-tools">
-
-            <div class="tool">
-                <span>😊</span>
+                </div>
 
                 <h3>
-                    Face Emotion Detection
+                    Face Emotion AI
                 </h3>
 
                 <p>
-                    Detect emotions using webcam
-                    and AI face analysis.
+                    Use your live camera to estimate your facial emotion
+                    and receive a friendly AI response.
                 </p>
 
-                <a href="/face_detection">
+                <ul class="tool-features">
+                    <li>Live camera analysis</li>
+                    <li>Privacy-first processing</li>
+                    <li>Supportive AI conversation</li>
+                </ul>
 
-                    <button>
-                     Start Face AI
-                    </button>
+                <a href="/face_detection"
+                   class="tool-button">
 
+                    Launch Face AI
+                    <span>→</span>
+
+                </a>
+
+            </article>
+
+
+            <article class="tool tool-text">
+
+                <div class="tool-top">
+
+                    <div class="tool-icon">
+                        📝
+                    </div>
+
+                    <span class="tool-status">
+                        Gemini AI
+                    </span>
+
+                </div>
+
+                <h3>
+                    Text Sentiment AI
+                </h3>
+
+                <p>
+                    Write your thoughts, detect your mood,
+                    and receive a real AI-powered response.
+                </p>
+
+                <ul class="tool-features">
+                    <li>Sentiment detection</li>
+                    <li>Gemini AI response</li>
+                    <li>Supportive conversation</li>
+                </ul>
+
+                <a href="/text_analysis"
+                   class="tool-button">
+
+                    Analyze Text
+                    <span>→</span>
+
+                </a>
+
+            </article>
+
+
+            <article class="tool tool-voice">
+
+                <div class="tool-top">
+
+                    <div class="tool-icon">
+                        🎤
+                    </div>
+
+                    <span class="tool-status">
+                        Speech AI
+                    </span>
+
+                </div>
+
+                <h3>
+                    Voice Emotion AI
+                </h3>
+
+                <p>
+                    Speak naturally and let AI convert your voice to text,
+                    detect mood, and respond supportively.
+                </p>
+
+                <ul class="tool-features">
+                    <li>Speech-to-text</li>
+                    <li>Mood detection</li>
+                    <li>Voice-based AI response</li>
+                </ul>
+
+                <a href="/voice_analysis"
+                   class="tool-button">
+
+                    Start Voice AI
+                    <span>→</span>
+
+                </a>
+
+            </article>
+
+        </section>
+
+
+        <!-- Lower Dashboard Grid -->
+        <section class="dashboard-grid">
+
+            <!-- Recent Activity -->
+            <article class="panel recent-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            RECENT ACTIVITY
+                        </span>
+
+                        <h2>
+                            Your Wellness Timeline
+                        </h2>
+
+                    </div>
+
+                    <a href="/reports">
+                        View All
+                    </a>
+
+                </div>
+
+
+                <div class="timeline">
+
+                    {% if recent_records %}
+
+                        {% for record in recent_records %}
+
+                            <div class="timeline-item">
+
+                                <div class="timeline-icon">
+
+                                    {% if record["input_type"] == "Face" %}
+                                        😊
+
+                                    {% elif record["input_type"] == "Text" %}
+                                        📝
+
+                                    {% elif record["input_type"] == "Voice" %}
+                                        🎤
+
+                                    {% else %}
+                                        🧠
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="timeline-content">
+
+                                    <strong>
+                                        {{ record["input_type"] }} Analysis
+                                    </strong>
+
+                                    <p>
+                                        Detected mood:
+                                        {{ record["emotion"] }}
+                                    </p>
+
+                                </div>
+
+
+                                <span class="timeline-time">
+                                    {{ record["created_at"] }}
+                                </span>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-icon">
+                                🧠
+                            </div>
+
+                            <div class="timeline-content">
+
+                                <strong>
+                                    No activity yet
+                                </strong>
+
+                                <p>
+                                    Start a Face, Text, or Voice analysis.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </article>
+
+
+            <!-- AI Suggestion -->
+            <article class="panel suggestion-panel">
+
+                <div class="suggestion-icon">
+                    🤖
+                </div>
+
+                <span class="section-label">
+                    MINDAI SUGGESTION
+                </span>
+
+                <h2>
+                    Take a small wellness break
+                </h2>
+
+                <p>
+                    Pause for two minutes, breathe slowly,
+                    relax your shoulders, and check how you feel.
+                </p>
+
+                <a href="/text_analysis"
+                   class="suggestion-button">
+                    Talk with MindAI
+                </a>
+
+            </article>
+
+        </section>
+
+
+        <!-- Analytics Section -->
+        <section class="report-box analytics-panel">
+
+            <div class="analytics-content">
+
+                <span class="section-label">
+                    WELLNESS ANALYTICS
+                </span>
+
+                <h2>
+                    Track your emotional patterns
+                </h2>
+
+                <p>
+                    Your daily, weekly, and monthly mood trends
+                    will appear here as more records are collected.
+                </p>
+
+                <a href="/reports"
+                   class="analytics-button">
+                    Open Analytics
                 </a>
 
             </div>
 
 
-            <div class="tool">
+            <div class="chart-placeholder">
 
-                <span>📝</span>
-
-                <h3>
-                    Text Sentiment Analysis
-                </h3>
-
-                <p>
-                    Write your thoughts and AI
-                    will understand your mood.
-                </p>
-                
-                <a href="/text_analysis">
-
-                    <button>
-                        Analyze Text
-                    </button>
-
-                </a>
+                <canvas
+                    id="weeklyMoodChart"
+                    data-labels='{{ day_labels | default([]) | tojson }}'
+                    data-scores='{{ day_scores | default([]) | tojson }}'>
+                </canvas>
 
             </div>
 
-
-            <div class="tool">
-
-                <span>🎤</span>
-
-                <h3>
-                    Voice Emotion Detection
-                </h3>
-
-                <p>
-                    Detect feelings from voice tone.
-                </p>
-
-                <a href="/voice_analysis">
-    <button>
-        Start Voice AI
-    </button>
-</a>
+        </section>
 
 
-            </div>
-
-
-        </div>
-
-
-        <!-- Report Section -->
-        <div class="report-box">
-
-            <h2>📊 Mood Analytics</h2>
+        <!-- Footer -->
+        <footer class="dashboard-footer">
 
             <p>
-                Your weekly emotional health
-                graph will appear here.
+                MindAI supports wellness awareness
+                and does not provide medical diagnosis.
             </p>
 
-        </div>
+            <span>
+                Built with care 💙
+            </span>
 
+        </footer>
 
-    </div>
+    </main>
 
 </div>
 
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* Theme Toggle */
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        if (themeToggle) {
+
+            themeToggle.addEventListener("click", function () {
+
+                document.body.classList.toggle(
+                    "light-dashboard"
+                );
+
+                if (
+                    document.body.classList.contains(
+                        "light-dashboard"
+                    )
+                ) {
+                    themeToggle.textContent = "☀️";
+                } else {
+                    themeToggle.textContent = "🌙";
+                }
+
+            });
+
+        }
+
+
+        /* Weekly Mood Chart */
+
+        const moodChartCanvas =
+            document.getElementById("weeklyMoodChart");
+
+        if (
+            moodChartCanvas &&
+            typeof Chart !== "undefined"
+        ) {
+
+            const dayLabels = JSON.parse(
+                moodChartCanvas.dataset.labels || "[]"
+            );
+
+            const dayScores = JSON.parse(
+                moodChartCanvas.dataset.scores || "[]"
+            );
+
+
+            new Chart(moodChartCanvas, {
+
+                type: "line",
+
+                data: {
+
+                    labels: dayLabels,
+
+                    datasets: [
+
+                        {
+                            label: "Daily Wellness Score",
+
+                            data: dayScores,
+
+                            borderColor: "#38bdf8",
+
+                            backgroundColor:
+                                "rgba(56, 189, 248, 0.15)",
+
+                            borderWidth: 3,
+
+                            tension: 0.4,
+
+                            fill: true,
+
+                            pointRadius: 5,
+
+                            pointHoverRadius: 7,
+
+                            pointBackgroundColor:
+                                "#6366f1",
+
+                            pointBorderColor:
+                                "#ffffff",
+
+                            pointBorderWidth: 2
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    interaction: {
+
+                        intersect: false,
+
+                        mode: "index"
+
+                    },
+
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        },
+
+
+                        tooltip: {
+
+                            callbacks: {
+
+                                label: function (context) {
+
+                                    const score =
+                                        context.raw;
+
+                                    if (score === 0) {
+                                        return "No mood record";
+                                    }
+
+                                    return (
+                                        "Wellness Score: " +
+                                        score +
+                                        "%"
+                                    );
+
+                                }
+
+                            }
+
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            max: 100,
+
+                            ticks: {
+
+                                color: "#94a3b8",
+
+                                stepSize: 20,
+
+                                callback: function (value) {
+                                    return value + "%";
+                                }
+
+                            },
+
+                            grid: {
+
+                                color:
+                                    "rgba(148, 163, 184, 0.12)"
+
+                            }
+
+                        },
+
+
+                        x: {
+
+                            ticks: {
+                                color: "#94a3b8"
+                            },
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            });
+
+        }
+
+    });
+</script>
+
 </body>
+
 </html>
