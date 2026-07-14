@@ -7,6 +7,7 @@ from routes.dashboard import dashboard
 from routes.face import face
 from routes.text import text
 from routes.voice import voice
+from routes.reports import reports
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -16,6 +17,7 @@ app.register_blueprint(dashboard)
 app.register_blueprint(face)
 app.register_blueprint(text)
 app.register_blueprint(voice)
+app.register_blueprint(reports)
 
 
 @app.route("/")

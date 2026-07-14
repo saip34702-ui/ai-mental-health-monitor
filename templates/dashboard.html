@@ -309,7 +309,14 @@
 
                 <h4>Current Streak</h4>
 
-                <h2>7 Days</h2>
+                <h2>
+                    {{ current_streak }}
+                    {% if current_streak ==1 %}
+                            Day
+                    {% else %}
+                            Days
+                    {% endif %}
+                </h2>
 
                 <p>
                     Keep checking in daily

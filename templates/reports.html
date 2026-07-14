@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MindAI | Reports</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="reports-layout">
+
+    <!-- Sidebar -->
+    <aside class="reports-sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🧠
+            </div>
+
+            <div>
+                <h2>MindAI</h2>
+                <p>Wellness Companion</p>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-menu">
+
+            <a href="/dashboard">
+                <span>🏠</span>
+                Dashboard
+            </a>
+
+            <a href="/face_detection">
+                <span>😊</span>
+                Face AI
+            </a>
+
+            <a href="/text_analysis">
+                <span>📝</span>
+                Text AI
+            </a>
+
+            <a href="/voice_analysis">
+                <span>🎤</span>
+                Voice AI
+            </a>
+
+            <a href="/reports"
+               class="active">
+                <span>📊</span>
+                Reports
+            </a>
+
+            <a href="/settings">
+                <span>⚙️</span>
+                Settings
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-support">
+
+            <div class="support-icon">
+                💙
+            </div>
+
+            <h4>Need support?</h4>
+
+            <p>
+                Talk to MindAI whenever you need
+                a calm and supportive space.
+            </p>
+
+            <a href="/text_analysis"
+               class="support-button">
+                Talk to AI
+            </a>
+
+        </div>
+
+
+        <a href="/logout"
+           class="logout">
+
+            <span>🚪</span>
+            Logout
+
+        </a>
+
+    </aside>
+
+
+    <!-- Main Reports Content -->
+    <main class="reports-main">
+
+        <!-- Header -->
+        <header class="reports-header">
+
+            <div>
+
+                <span class="section-label">
+                    WELLNESS REPORTS
+                </span>
+
+                <h1>
+                    Your Mental Wellness Report
+                </h1>
+
+                <p>
+                    Review your emotional check-ins,
+                    activity history, and AI usage.
+                </p>
+
+            </div>
+
+
+            <div class="reports-header-actions">
+
+                <button type="button"
+                        class="report-action-button"
+                        onclick="window.print()">
+
+                    📄 Export Report
+
+                </button>
+
+
+                <a href="/dashboard"
+                   class="report-back-button">
+
+                    ← Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- User Summary -->
+        <section class="report-user-card">
+
+            <div class="report-avatar">
+
+                {{ (name[0] if name else "U") | upper }}
+
+            </div>
+
+
+            <div>
+
+                <span class="section-label">
+                    PERSONAL REPORT
+                </span>
+
+                <h2>
+                    {{ name }}
+                </h2>
+
+                <p>
+                    Your private wellness activity summary
+                </p>
+
+            </div>
+
+
+            <div class="report-date">
+
+                <span>
+                    Report generated
+                </span>
+
+                <strong id="currentDate">
+                    Today
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- Summary Statistics -->
+        <section class="report-summary-grid">
+
+            <article class="report-stat-card">
+
+                <div class="report-stat-top">
+
+                    <div class="report-stat-icon">
+                        📊
+                    </div>
+
+                    <span>
+                        All activity
+                    </span>
+
+                </div>
+
+                <h3>
+                    {{ total }}
+                </h3>
+
+                <p>
+                    Total analyses
+                </p>
+
+            </article>
+
+
+            <article class="report-stat-card">
+
+                <div class="report-stat-top">
+
+                    <div class="report-stat-icon">
+                        😊
+                    </div>
+
+                    <span>
+                        Camera
+                    </span>
+
+                </div>
+
+                <h3>
+                    {{ face }}
+                </h3>
+
+                <p>
+                    Face analyses
+                </p>
+
+            </article>
+
+
+            <article class="report-stat-card">
+
+                <div class="report-stat-top">
+
+                    <div class="report-stat-icon">
+                        📝
+                    </div>
+
+                    <span>
+                        Text
+                    </span>
+
+                </div>
+
+                <h3>
+                    {{ text }}
+                </h3>
+
+                <p>
+                    Text analyses
+                </p>
+
+            </article>
+
+
+            <article class="report-stat-card">
+
+                <div class="report-stat-top">
+
+                    <div class="report-stat-icon">
+                        🎤
+                    </div>
+
+                    <span>
+                        Voice
+                    </span>
+
+                </div>
+
+                <h3>
+                    {{ voice }}
+                </h3>
+
+                <p>
+                    Voice analyses
+                </p>
+
+            </article>
+
+        </section>
+
+
+        <!-- Analytics Grid -->
+        <section class="reports-analytics-grid">
+
+            <!-- Usage Distribution -->
+            <article class="reports-panel">
+
+                <div class="reports-panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            AI MODULE USAGE
+                        </span>
+
+                        <h2>
+                            Analysis Distribution
+                        </h2>
+
+                    </div>
+
+                    <span class="reports-panel-badge">
+                        Live Data
+                    </span>
+
+                </div>
+
+
+                <div class="report-chart-container">
+
+                    <canvas
+                        id="moduleUsageChart"
+                        data-face="{{ face }}"
+                        data-text="{{ text }}"
+                        data-voice="{{ voice }}">
+                    </canvas>
+
+                </div>
+
+            </article>
+
+
+            <!-- AI Insight -->
+            <article class="reports-panel insight-card">
+
+                <div class="insight-icon">
+                    🤖
+                </div>
+
+                <span class="section-label">
+                    MINDAI INSIGHT
+                </span>
+
+                {% if total > 0 %}
+
+                    <h2>
+                        Your wellness journey has started
+                    </h2>
+
+                    <p>
+                        You have completed
+                        <strong>{{ total }}</strong>
+                        emotional check-ins using MindAI.
+                        Continue checking in regularly to identify
+                        useful emotional patterns over time.
+                    </p>
+
+                {% else %}
+
+                    <h2>
+                        Start your first wellness check
+                    </h2>
+
+                    <p>
+                        Use Face, Text, or Voice AI to begin
+                        building your personal wellness history.
+                    </p>
+
+                {% endif %}
+
+
+                <div class="insight-actions">
+
+                    <a href="/face_detection">
+                        Start Face Check
+                    </a>
+
+                    <a href="/text_analysis">
+                        Talk to AI
+                    </a>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- Filters -->
+        <section class="report-filter-panel">
+
+            <div class="filter-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        MOOD HISTORY
+                    </span>
+
+                    <h2>
+                        All Wellness Records
+                    </h2>
+
+                </div>
+
+
+                <span id="visibleRecordCount"
+                      class="record-count">
+
+                    {{ total }} records
+
+                </span>
+
+            </div>
+
+
+            <div class="report-filters">
+
+                <div class="filter-field">
+
+                    <label for="reportSearch">
+                        Search
+                    </label>
+
+                    <input type="text"
+                           id="reportSearch"
+                           placeholder="Search emotion, type, or note...">
+
+                </div>
+
+
+                <div class="filter-field">
+
+                    <label for="typeFilter">
+                        Analysis Type
+                    </label>
+
+                    <select id="typeFilter">
+
+                        <option value="all">
+                            All Types
+                        </option>
+
+                        <option value="face">
+                            Face AI
+                        </option>
+
+                        <option value="text">
+                            Text AI
+                        </option>
+
+                        <option value="voice">
+                            Voice AI
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="filter-field">
+
+                    <label for="emotionFilter">
+                        Emotion
+                    </label>
+
+                    <select id="emotionFilter">
+
+                        <option value="all">
+                            All Emotions
+                        </option>
+
+                        <option value="happy">
+                            Happy
+                        </option>
+
+                        <option value="neutral">
+                            Neutral
+                        </option>
+
+                        <option value="sad">
+                            Sad
+                        </option>
+
+                        <option value="angry">
+                            Angry
+                        </option>
+
+                        <option value="fear">
+                            Fear
+                        </option>
+
+                        <option value="surprise">
+                            Surprise
+                        </option>
+
+                        <option value="disgust">
+                            Disgust
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button type="button"
+                        id="resetFilters"
+                        class="reset-filter-button">
+
+                    Reset Filters
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Mood Records -->
+        <section class="records-section">
+
+            {% if records %}
+
+                <div class="records-list"
+                     id="recordsList">
+
+                    {% for record in records %}
+
+                        <article class="record-card"
+                                 data-type="{{ record['input_type'] | lower }}"
+                                 data-emotion="{{ record['emotion'] | lower }}"
+                                 data-search="{{ record['input_type'] | lower }} {{ record['emotion'] | lower }} {{ record['note'] or '' }}">
+
+                            <div class="record-emotion-icon">
+
+                                {% if record["emotion"] | lower == "happy" %}
+
+                                    😊
+
+                                {% elif record["emotion"] | lower == "sad" %}
+
+                                    😔
+
+                                {% elif record["emotion"] | lower == "angry" %}
+
+                                    😡
+
+                                {% elif record["emotion"] | lower == "fear" %}
+
+                                    😨
+
+                                {% elif record["emotion"] | lower == "surprise" %}
+
+                                    😲
+
+                                {% elif record["emotion"] | lower == "disgust" %}
+
+                                    🤢
+
+                                {% else %}
+
+                                    😐
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="record-details">
+
+                                <div class="record-title-row">
+
+                                    <div>
+
+                                        <span class="record-type-badge">
+
+                                            {% if record["input_type"] == "Face" %}
+
+                                                📷 Face AI
+
+                                            {% elif record["input_type"] == "Text" %}
+
+                                                📝 Text AI
+
+                                            {% elif record["input_type"] == "Voice" %}
+
+                                                🎤 Voice AI
+
+                                            {% else %}
+
+                                                🧠 MindAI
+
+                                            {% endif %}
+
+                                        </span>
+
+                                        <h3>
+                                            {{ record["emotion"] }}
+                                        </h3>
+
+                                    </div>
+
+
+                                    <time>
+                                        {{ record["created_at"] }}
+                                    </time>
+
+                                </div>
+
+
+                                {% if record["note"] %}
+
+                                    <p class="record-note">
+                                        {{ record["note"] }}
+                                    </p>
+
+                                {% else %}
+
+                                    <p class="record-note empty-note">
+                                        No additional note was saved.
+                                    </p>
+
+                                {% endif %}
+
+
+                                <div class="record-meta">
+
+                                    <span>
+                                        Analysis:
+                                        <strong>
+                                            {{ record["input_type"] }}
+                                        </strong>
+                                    </span>
+
+
+                                    <span>
+                                        Confidence:
+
+                                        <strong>
+
+                                            {% if record["confidence"] is not none %}
+
+                                                {{ record["confidence"] }}%
+
+                                            {% else %}
+
+                                                Not available
+
+                                            {% endif %}
+
+                                        </strong>
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div id="noFilteredRecords"
+                     class="empty-records"
+                     style="display:none;">
+
+                    <div>
+                        🔍
+                    </div>
+
+                    <h3>
+                        No matching records
+                    </h3>
+
+                    <p>
+                        Try changing or resetting your filters.
+                    </p>
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-records">
+
+                    <div>
+                        📊
+                    </div>
+
+                    <h3>
+                        No wellness records yet
+                    </h3>
+
+                    <p>
+                        Complete your first Face, Text, or Voice analysis
+                        to see it in your reports.
+                    </p>
+
+                    <div class="empty-record-actions">
+
+                        <a href="/face_detection">
+                            Start Face AI
+                        </a>
+
+                        <a href="/text_analysis">
+                            Start Text AI
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="reports-footer">
+
+            <p>
+                MindAI provides wellness awareness support
+                and does not provide medical diagnosis.
+            </p>
+
+            <span>
+                Private and secure 💙
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* Current date */
+
+        const currentDateElement =
+            document.getElementById("currentDate");
+
+        if (currentDateElement) {
+
+            currentDateElement.textContent =
+                new Date().toLocaleDateString(
+                    "en-IN",
+                    {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric"
+                    }
+                );
+
+        }
+
+
+        /* Module usage chart */
+
+        const usageChartCanvas =
+            document.getElementById("moduleUsageChart");
+
+        if (
+            usageChartCanvas &&
+            typeof Chart !== "undefined"
+        ) {
+
+            const faceCount =
+                Number(usageChartCanvas.dataset.face || 0);
+
+            const textCount =
+                Number(usageChartCanvas.dataset.text || 0);
+
+            const voiceCount =
+                Number(usageChartCanvas.dataset.voice || 0);
+
+
+            new Chart(usageChartCanvas, {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels: [
+                        "Face AI",
+                        "Text AI",
+                        "Voice AI"
+                    ],
+
+                    datasets: [
+                        {
+                            data: [
+                                faceCount,
+                                textCount,
+                                voiceCount
+                            ],
+
+                            backgroundColor: [
+                                "#38bdf8",
+                                "#8b5cf6",
+                                "#22c55e"
+                            ],
+
+                            borderColor:
+                                "rgba(15, 23, 42, 0.4)",
+
+                            borderWidth: 4,
+
+                            hoverOffset: 8
+                        }
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    cutout: "68%",
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "bottom",
+
+                            labels: {
+
+                                color: "#cbd5e1",
+
+                                padding: 20,
+
+                                usePointStyle: true
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            });
+
+        }
+
+
+        /* Record filters */
+
+        const searchInput =
+            document.getElementById("reportSearch");
+
+        const typeFilter =
+            document.getElementById("typeFilter");
+
+        const emotionFilter =
+            document.getElementById("emotionFilter");
+
+        const resetButton =
+            document.getElementById("resetFilters");
+
+        const recordCards =
+            Array.from(
+                document.querySelectorAll(".record-card")
+            );
+
+        const recordCount =
+            document.getElementById("visibleRecordCount");
+
+        const noRecords =
+            document.getElementById("noFilteredRecords");
+
+
+        function filterRecords() {
+
+            const searchValue =
+                searchInput
+                    ? searchInput.value.toLowerCase().trim()
+                    : "";
+
+            const selectedType =
+                typeFilter
+                    ? typeFilter.value
+                    : "all";
+
+            const selectedEmotion =
+                emotionFilter
+                    ? emotionFilter.value
+                    : "all";
+
+            let visibleCount = 0;
+
+
+            recordCards.forEach(function (card) {
+
+                const cardSearch =
+                    card.dataset.search.toLowerCase();
+
+                const cardType =
+                    card.dataset.type;
+
+                const cardEmotion =
+                    card.dataset.emotion;
+
+
+                const searchMatches =
+                    cardSearch.includes(searchValue);
+
+                const typeMatches =
+                    selectedType === "all" ||
+                    cardType === selectedType;
+
+                const emotionMatches =
+                    selectedEmotion === "all" ||
+                    cardEmotion === selectedEmotion;
+
+
+                const shouldShow =
+                    searchMatches &&
+                    typeMatches &&
+                    emotionMatches;
+
+
+                card.style.display =
+                    shouldShow
+                        ? "flex"
+                        : "none";
+
+
+                if (shouldShow) {
+                    visibleCount += 1;
+                }
+
+            });
+
+
+            if (recordCount) {
+
+                recordCount.textContent =
+                    visibleCount +
+                    (
+                        visibleCount === 1
+                            ? " record"
+                            : " records"
+                    );
+
+            }
+
+
+            if (noRecords) {
+
+                noRecords.style.display =
+                    visibleCount === 0
+                        ? "block"
+                        : "none";
+
+            }
+
+        }
+
+
+        if (searchInput) {
+            searchInput.addEventListener(
+                "input",
+                filterRecords
+            );
+        }
+
+
+        if (typeFilter) {
+            typeFilter.addEventListener(
+                "change",
+                filterRecords
+            );
+        }
+
+
+        if (emotionFilter) {
+            emotionFilter.addEventListener(
+                "change",
+                filterRecords
+            );
+        }
+
+
+        if (resetButton) {
+
+            resetButton.addEventListener(
+                "click",
+                function () {
+
+                    searchInput.value = "";
+                    typeFilter.value = "all";
+                    emotionFilter.value = "all";
+
+                    filterRecords();
+
+                }
+            );
+
+        }
+
+    });
+</script>
+
+</body>
+
+</html>
