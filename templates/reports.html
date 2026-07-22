@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>MindAI | Reports</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
 </head>
 
 <body>
@@ -56,8 +60,10 @@
                 Voice AI
             </a>
 
-            <a href="/reports"
-               class="active">
+            <a
+                href="/reports"
+                class="active"
+            >
                 <span>📊</span>
                 Reports
             </a>
@@ -83,20 +89,22 @@
                 a calm and supportive space.
             </p>
 
-            <a href="/text_analysis"
-               class="support-button">
+            <a
+                href="/text_analysis"
+                class="support-button"
+            >
                 Talk to AI
             </a>
 
         </div>
 
 
-        <a href="/logout"
-           class="logout">
-
+        <a
+            href="/logout"
+            class="logout"
+        >
             <span>🚪</span>
             Logout
-
         </a>
 
     </aside>
@@ -128,20 +136,20 @@
 
             <div class="reports-header-actions">
 
-                <button type="button"
-                        class="report-action-button"
-                        onclick="window.print()">
-
+                <button
+                    type="button"
+                    class="report-action-button"
+                    onclick="window.print()"
+                >
                     📄 Export Report
-
                 </button>
 
 
-                <a href="/dashboard"
-                   class="report-back-button">
-
+                <a
+                    href="/dashboard"
+                    class="report-back-button"
+                >
                     ← Back to Dashboard
-
                 </a>
 
             </div>
@@ -153,9 +161,7 @@
         <section class="report-user-card">
 
             <div class="report-avatar">
-
                 {{ (name[0] if name else "U") | upper }}
-
             </div>
 
 
@@ -329,8 +335,8 @@
                         id="moduleUsageChart"
                         data-face="{{ face }}"
                         data-text="{{ text }}"
-                        data-voice="{{ voice }}">
-                    </canvas>
+                        data-voice="{{ voice }}"
+                    ></canvas>
 
                 </div>
 
@@ -348,33 +354,17 @@
                     MINDAI INSIGHT
                 </span>
 
-                {% if total > 0 %}
+                <span class="reports-panel-badge">
+                    {{ wellness_insight["status"] }}
+                </span>
 
-                    <h2>
-                        Your wellness journey has started
-                    </h2>
+                <h2>
+                    {{ wellness_insight["title"] }}
+                </h2>
 
-                    <p>
-                        You have completed
-                        <strong>{{ total }}</strong>
-                        emotional check-ins using MindAI.
-                        Continue checking in regularly to identify
-                        useful emotional patterns over time.
-                    </p>
-
-                {% else %}
-
-                    <h2>
-                        Start your first wellness check
-                    </h2>
-
-                    <p>
-                        Use Face, Text, or Voice AI to begin
-                        building your personal wellness history.
-                    </p>
-
-                {% endif %}
-
+                <p>
+                    {{ wellness_insight["message"] }}
+                </p>
 
                 <div class="insight-actions">
 
@@ -385,6 +375,80 @@
                     <a href="/text_analysis">
                         Talk to AI
                     </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- Emotion Distribution -->
+            <article class="reports-panel">
+
+                <div class="reports-panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            EMOTION ANALYTICS
+                        </span>
+
+                        <h2>
+                            Emotion Distribution
+                        </h2>
+
+                    </div>
+
+                    <span class="reports-panel-badge">
+                        Live AI
+                    </span>
+
+                </div>
+
+
+                <div class="report-chart-container">
+
+                    <canvas
+                        id="emotionChart"
+                        data-emotions='{{ analytics["emotion_distribution"] | tojson | forceescape }}'
+                    ></canvas>
+
+                </div>
+
+            </article>
+
+
+            <!-- Weekly Mood Trend -->
+            <article class="reports-panel">
+
+                <div class="reports-panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            WEEKLY WELLNESS
+                        </span>
+
+                        <h2>
+                            Weekly Mood Trend
+                        </h2>
+
+                    </div>
+
+                    <span class="reports-panel-badge">
+                        Last 7 Days
+                    </span>
+
+                </div>
+
+
+                <div class="report-chart-container">
+
+                    <canvas
+                        id="weeklyTrendChart"
+                        data-labels='{{ analytics["weekly_trend"]["labels"] | tojson | forceescape }}'
+                        data-scores='{{ analytics["weekly_trend"]["scores"] | tojson | forceescape }}'
+                        data-counts='{{ analytics["weekly_trend"]["record_counts"] | tojson | forceescape }}'
+                    ></canvas>
 
                 </div>
 
@@ -411,12 +475,50 @@
                 </div>
 
 
-                <span id="visibleRecordCount"
-                      class="record-count">
-
-                    {{ total }} records
-
+                <span
+                    id="visibleRecordCount"
+                    class="record-count"
+                >
+                    {{ total }}
+                    {% if total == 1 %}
+                        record
+                    {% else %}
+                        records
+                    {% endif %}
                 </span>
+
+            </div>
+
+
+            <div class="date-filter-links">
+
+                <a
+                    href="/reports"
+                    class="date-filter-link {% if filter_type == 'all' %}active{% endif %}"
+                >
+                    All Time
+                </a>
+
+                <a
+                    href="/reports?filter=today"
+                    class="date-filter-link {% if filter_type == 'today' %}active{% endif %}"
+                >
+                    Today
+                </a>
+
+                <a
+                    href="/reports?filter=7days"
+                    class="date-filter-link {% if filter_type == '7days' %}active{% endif %}"
+                >
+                    Last 7 Days
+                </a>
+
+                <a
+                    href="/reports?filter=30days"
+                    class="date-filter-link {% if filter_type == '30days' %}active{% endif %}"
+                >
+                    Last 30 Days
+                </a>
 
             </div>
 
@@ -429,9 +531,11 @@
                         Search
                     </label>
 
-                    <input type="text"
-                           id="reportSearch"
-                           placeholder="Search emotion, type, or note...">
+                    <input
+                        type="text"
+                        id="reportSearch"
+                        placeholder="Search emotion, type, or note..."
+                    >
 
                 </div>
 
@@ -510,12 +614,12 @@
                 </div>
 
 
-                <button type="button"
-                        id="resetFilters"
-                        class="reset-filter-button">
-
+                <button
+                    type="button"
+                    id="resetFilters"
+                    class="reset-filter-button"
+                >
                     Reset Filters
-
                 </button>
 
             </div>
@@ -528,46 +632,36 @@
 
             {% if records %}
 
-                <div class="records-list"
-                     id="recordsList">
+                <div
+                    class="records-list"
+                    id="recordsList"
+                >
 
                     {% for record in records %}
 
-                        <article class="record-card"
-                                 data-type="{{ record['input_type'] | lower }}"
-                                 data-emotion="{{ record['emotion'] | lower }}"
-                                 data-search="{{ record['input_type'] | lower }} {{ record['emotion'] | lower }} {{ record['note'] or '' }}">
+                        <article
+                            class="record-card"
+                            data-type="{{ record['input_type'] | lower }}"
+                            data-emotion="{{ record['emotion'] | lower }}"
+                            data-search="{{ record['input_type'] | lower }} {{ record['emotion'] | lower }} {{ record['note'] or '' }}"
+                        >
 
                             <div class="record-emotion-icon">
 
                                 {% if record["emotion"] | lower == "happy" %}
-
                                     😊
-
                                 {% elif record["emotion"] | lower == "sad" %}
-
                                     😔
-
                                 {% elif record["emotion"] | lower == "angry" %}
-
                                     😡
-
                                 {% elif record["emotion"] | lower == "fear" %}
-
                                     😨
-
                                 {% elif record["emotion"] | lower == "surprise" %}
-
                                     😲
-
                                 {% elif record["emotion"] | lower == "disgust" %}
-
                                     🤢
-
                                 {% else %}
-
                                     😐
-
                                 {% endif %}
 
                             </div>
@@ -582,21 +676,13 @@
                                         <span class="record-type-badge">
 
                                             {% if record["input_type"] == "Face" %}
-
                                                 📷 Face AI
-
                                             {% elif record["input_type"] == "Text" %}
-
                                                 📝 Text AI
-
                                             {% elif record["input_type"] == "Voice" %}
-
                                                 🎤 Voice AI
-
                                             {% else %}
-
                                                 🧠 MindAI
-
                                             {% endif %}
 
                                         </span>
@@ -646,13 +732,9 @@
                                         <strong>
 
                                             {% if record["confidence"] is not none %}
-
                                                 {{ record["confidence"] }}%
-
                                             {% else %}
-
                                                 Not available
-
                                             {% endif %}
 
                                         </strong>
@@ -670,9 +752,11 @@
                 </div>
 
 
-                <div id="noFilteredRecords"
-                     class="empty-records"
-                     style="display:none;">
+                <div
+                    id="noFilteredRecords"
+                    class="empty-records"
+                    style="display: none;"
+                >
 
                     <div>
                         🔍
@@ -749,13 +833,32 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        /* Current date */
+        function parseDatasetJson(element, key) {
+            if (!element) {
+                return [];
+            }
+
+            try {
+                return JSON.parse(
+                    element.dataset[key] || "[]"
+                );
+            } catch (error) {
+                console.error(
+                    "Unable to parse chart data:",
+                    error
+                );
+
+                return [];
+            }
+        }
+
+
+        /* Current Date */
 
         const currentDateElement =
             document.getElementById("currentDate");
 
         if (currentDateElement) {
-
             currentDateElement.textContent =
                 new Date().toLocaleDateString(
                     "en-IN",
@@ -765,11 +868,10 @@
                         year: "numeric"
                     }
                 );
-
         }
 
 
-        /* Module usage chart */
+        /* Module Usage Chart */
 
         const usageChartCanvas =
             document.getElementById("moduleUsageChart");
@@ -778,91 +880,305 @@
             usageChartCanvas &&
             typeof Chart !== "undefined"
         ) {
-
             const faceCount =
-                Number(usageChartCanvas.dataset.face || 0);
+                Number(
+                    usageChartCanvas.dataset.face || 0
+                );
 
             const textCount =
-                Number(usageChartCanvas.dataset.text || 0);
+                Number(
+                    usageChartCanvas.dataset.text || 0
+                );
 
             const voiceCount =
-                Number(usageChartCanvas.dataset.voice || 0);
+                Number(
+                    usageChartCanvas.dataset.voice || 0
+                );
 
 
-            new Chart(usageChartCanvas, {
+            new Chart(
+                usageChartCanvas,
+                {
+                    type: "doughnut",
 
-                type: "doughnut",
+                    data: {
+                        labels: [
+                            "Face AI",
+                            "Text AI",
+                            "Voice AI"
+                        ],
 
-                data: {
+                        datasets: [
+                            {
+                                data: [
+                                    faceCount,
+                                    textCount,
+                                    voiceCount
+                                ],
 
-                    labels: [
-                        "Face AI",
-                        "Text AI",
-                        "Voice AI"
-                    ],
+                                backgroundColor: [
+                                    "#38bdf8",
+                                    "#8b5cf6",
+                                    "#22c55e"
+                                ],
 
-                    datasets: [
-                        {
-                            data: [
-                                faceCount,
-                                textCount,
-                                voiceCount
-                            ],
+                                borderColor:
+                                    "rgba(15, 23, 42, 0.4)",
 
-                            backgroundColor: [
-                                "#38bdf8",
-                                "#8b5cf6",
-                                "#22c55e"
-                            ],
-
-                            borderColor:
-                                "rgba(15, 23, 42, 0.4)",
-
-                            borderWidth: 4,
-
-                            hoverOffset: 8
-                        }
-                    ]
-
-                },
-
-
-                options: {
-
-                    responsive: true,
-
-                    maintainAspectRatio: false,
-
-                    cutout: "68%",
-
-                    plugins: {
-
-                        legend: {
-
-                            position: "bottom",
-
-                            labels: {
-
-                                color: "#cbd5e1",
-
-                                padding: 20,
-
-                                usePointStyle: true
-
+                                borderWidth: 4,
+                                hoverOffset: 8
                             }
+                        ]
+                    },
 
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: "68%",
+
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+
+                                labels: {
+                                    color: "#cbd5e1",
+                                    padding: 20,
+                                    usePointStyle: true
+                                }
+                            }
                         }
-
                     }
-
                 }
-
-            });
-
+            );
         }
 
 
-        /* Record filters */
+        /* Emotion Distribution Chart */
+
+        const emotionChartCanvas =
+            document.getElementById("emotionChart");
+
+        if (
+            emotionChartCanvas &&
+            typeof Chart !== "undefined"
+        ) {
+            const emotionData =
+                parseDatasetJson(
+                    emotionChartCanvas,
+                    "emotions"
+                );
+
+            const emotionLabels =
+                emotionData.map(
+                    function (item) {
+                        const emotion =
+                            String(
+                                item.emotion || "Unknown"
+                            );
+
+                        return (
+                            emotion.charAt(0).toUpperCase() +
+                            emotion.slice(1)
+                        );
+                    }
+                );
+
+            const emotionValues =
+                emotionData.map(
+                    function (item) {
+                        return Number(
+                            item.count || 0
+                        );
+                    }
+                );
+
+
+            new Chart(
+                emotionChartCanvas,
+                {
+                    type: "pie",
+
+                    data: {
+                        labels: emotionLabels,
+
+                        datasets: [
+                            {
+                                data: emotionValues,
+
+                                backgroundColor: [
+                                    "#22c55e",
+                                    "#38bdf8",
+                                    "#f97316",
+                                    "#ef4444",
+                                    "#8b5cf6",
+                                    "#eab308",
+                                    "#14b8a6"
+                                ]
+                            }
+                        ]
+                    },
+
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+
+                                labels: {
+                                    color: "#ffffff",
+                                    padding: 20
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+
+        /* Weekly Mood Trend Chart */
+
+        const weeklyTrendCanvas =
+            document.getElementById("weeklyTrendChart");
+
+        if (
+            weeklyTrendCanvas &&
+            typeof Chart !== "undefined"
+        ) {
+            const weeklyLabels =
+                parseDatasetJson(
+                    weeklyTrendCanvas,
+                    "labels"
+                );
+
+            const weeklyScores =
+                parseDatasetJson(
+                    weeklyTrendCanvas,
+                    "scores"
+                );
+
+            const weeklyCounts =
+                parseDatasetJson(
+                    weeklyTrendCanvas,
+                    "counts"
+                );
+
+
+            new Chart(
+                weeklyTrendCanvas,
+                {
+                    type: "line",
+
+                    data: {
+                        labels: weeklyLabels,
+
+                        datasets: [
+                            {
+                                label: "Wellness Score",
+                                data: weeklyScores,
+                                borderColor: "#38bdf8",
+                                backgroundColor:
+                                    "rgba(56, 189, 248, 0.15)",
+                                borderWidth: 3,
+                                tension: 0.35,
+                                fill: true,
+                                pointRadius: 5,
+                                pointHoverRadius: 7,
+                                pointBackgroundColor:
+                                    "#6366f1",
+                                pointBorderColor:
+                                    "#ffffff",
+                                pointBorderWidth: 2
+                            }
+                        ]
+                    },
+
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+
+                        interaction: {
+                            mode: "index",
+                            intersect: false
+                        },
+
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+
+                            tooltip: {
+                                callbacks: {
+                                    label:
+                                        function (context) {
+                                            const index =
+                                                context.dataIndex;
+
+                                            const score =
+                                                context.raw;
+
+                                            const count =
+                                                weeklyCounts[index] || 0;
+
+                                            if (count === 0) {
+                                                return "No mood records";
+                                            }
+
+                                            return (
+                                                "Wellness Score: " +
+                                                score +
+                                                "% (" +
+                                                count +
+                                                (
+                                                    count === 1
+                                                        ? " record)"
+                                                        : " records)"
+                                                )
+                                            );
+                                        }
+                                }
+                            }
+                        },
+
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+
+                                ticks: {
+                                    color: "#cbd5e1",
+
+                                    callback:
+                                        function (value) {
+                                            return value + "%";
+                                        }
+                                },
+
+                                grid: {
+                                    color:
+                                        "rgba(255, 255, 255, 0.08)"
+                                }
+                            },
+
+                            x: {
+                                ticks: {
+                                    color: "#cbd5e1"
+                                },
+
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+
+        /* Record Filters */
 
         const searchInput =
             document.getElementById("reportSearch");
@@ -878,21 +1194,28 @@
 
         const recordCards =
             Array.from(
-                document.querySelectorAll(".record-card")
+                document.querySelectorAll(
+                    ".record-card"
+                )
             );
 
         const recordCount =
-            document.getElementById("visibleRecordCount");
+            document.getElementById(
+                "visibleRecordCount"
+            );
 
         const noRecords =
-            document.getElementById("noFilteredRecords");
+            document.getElementById(
+                "noFilteredRecords"
+            );
 
 
         function filterRecords() {
-
             const searchValue =
                 searchInput
-                    ? searchInput.value.toLowerCase().trim()
+                    ? searchInput.value
+                        .toLowerCase()
+                        .trim()
                     : "";
 
             const selectedType =
@@ -908,51 +1231,54 @@
             let visibleCount = 0;
 
 
-            recordCards.forEach(function (card) {
+            recordCards.forEach(
+                function (card) {
+                    const cardSearch =
+                        String(
+                            card.dataset.search || ""
+                        ).toLowerCase();
 
-                const cardSearch =
-                    card.dataset.search.toLowerCase();
+                    const cardType =
+                        String(
+                            card.dataset.type || ""
+                        );
 
-                const cardType =
-                    card.dataset.type;
+                    const cardEmotion =
+                        String(
+                            card.dataset.emotion || ""
+                        );
 
-                const cardEmotion =
-                    card.dataset.emotion;
+                    const searchMatches =
+                        cardSearch.includes(
+                            searchValue
+                        );
 
+                    const typeMatches =
+                        selectedType === "all" ||
+                        cardType === selectedType;
 
-                const searchMatches =
-                    cardSearch.includes(searchValue);
+                    const emotionMatches =
+                        selectedEmotion === "all" ||
+                        cardEmotion === selectedEmotion;
 
-                const typeMatches =
-                    selectedType === "all" ||
-                    cardType === selectedType;
+                    const shouldShow =
+                        searchMatches &&
+                        typeMatches &&
+                        emotionMatches;
 
-                const emotionMatches =
-                    selectedEmotion === "all" ||
-                    cardEmotion === selectedEmotion;
+                    card.style.display =
+                        shouldShow
+                            ? "flex"
+                            : "none";
 
-
-                const shouldShow =
-                    searchMatches &&
-                    typeMatches &&
-                    emotionMatches;
-
-
-                card.style.display =
-                    shouldShow
-                        ? "flex"
-                        : "none";
-
-
-                if (shouldShow) {
-                    visibleCount += 1;
+                    if (shouldShow) {
+                        visibleCount += 1;
+                    }
                 }
-
-            });
+            );
 
 
             if (recordCount) {
-
                 recordCount.textContent =
                     visibleCount +
                     (
@@ -960,19 +1286,15 @@
                             ? " record"
                             : " records"
                     );
-
             }
 
 
             if (noRecords) {
-
                 noRecords.style.display =
                     visibleCount === 0
                         ? "block"
                         : "none";
-
             }
-
         }
 
 
@@ -1001,20 +1323,24 @@
 
 
         if (resetButton) {
-
             resetButton.addEventListener(
                 "click",
                 function () {
+                    if (searchInput) {
+                        searchInput.value = "";
+                    }
 
-                    searchInput.value = "";
-                    typeFilter.value = "all";
-                    emotionFilter.value = "all";
+                    if (typeFilter) {
+                        typeFilter.value = "all";
+                    }
+
+                    if (emotionFilter) {
+                        emotionFilter.value = "all";
+                    }
 
                     filterRecords();
-
                 }
             );
-
         }
 
     });

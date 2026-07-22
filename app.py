@@ -8,6 +8,7 @@ from routes.face import face
 from routes.text import text
 from routes.voice import voice
 from routes.reports import reports
+from routes.chatbot import chatbot
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -18,6 +19,7 @@ app.register_blueprint(face)
 app.register_blueprint(text)
 app.register_blueprint(voice)
 app.register_blueprint(reports)
+app.register_blueprint(chatbot)
 
 
 @app.route("/")
