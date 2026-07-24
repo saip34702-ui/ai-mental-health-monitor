@@ -44,6 +44,67 @@ def get_recent_mood_context(user_id, limit=5):
     return "; ".join(context_items)
 
 
+def get_recent_chat_history(user_id, limit=6):
+    """Fetch recent chatbot conversations for AI context."""
+
+    conn = get_db_connection()
+
+    try:
+        records = conn.execute(
+            """
+            SELECT user_message, ai_reply
+            FROM chat_history
+            WHERE user_id = ?
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            (user_id, limit)
+        ).fetchall()
+
+    finally:
+        conn.close()
+
+    if not records:
+        return "No previous conversation is available."
+
+    history_items = []
+
+    for record in reversed(records):
+        user_message = record["user_message"] or ""
+        ai_reply = record["ai_reply"] or ""
+
+        history_items.append(
+            f"User: {user_message}\n"
+            f"MindAI: {ai_reply}"
+        )
+
+    return "\n\n".join(history_items)
+
+
+def save_chat_history(user_id, user_message, ai_reply):
+    """Save one user and AI conversation pair."""
+
+    conn = get_db_connection()
+
+    try:
+        conn.execute(
+            """
+            INSERT INTO chat_history (
+                user_id,
+                user_message,
+                ai_reply
+            )
+            VALUES (?, ?, ?)
+            """,
+            (user_id, user_message, ai_reply)
+        )
+
+        conn.commit()
+
+    finally:
+        conn.close()
+
+
 @chatbot.route("/chatbot")
 def chatbot_page():
     if "user_id" not in session:
@@ -53,6 +114,84 @@ def chatbot_page():
         "chatbot.html",
         name=session.get("user_name", "User")
     )
+
+
+@chatbot.route("/chatbot/history", methods=["GET"])
+def chatbot_history():
+    """Return complete chat history for the logged-in user."""
+
+    if "user_id" not in session:
+        return jsonify({
+            "success": False,
+            "error": "Please login first."
+        }), 401
+
+    user_id = session["user_id"]
+
+    conn = get_db_connection()
+
+    try:
+        records = conn.execute(
+            """
+            SELECT id, user_message, ai_reply, created_at
+            FROM chat_history
+            WHERE user_id = ?
+            ORDER BY id ASC
+            """,
+            (user_id,)
+        ).fetchall()
+
+    finally:
+        conn.close()
+
+    history = []
+
+    for record in records:
+        history.append({
+            "id": record["id"],
+            "user_message": record["user_message"],
+            "ai_reply": record["ai_reply"],
+            "created_at": record["created_at"]
+        })
+
+    return jsonify({
+        "success": True,
+        "history": history
+    })
+
+
+@chatbot.route("/chatbot/clear", methods=["POST"])
+def clear_chat_history():
+    """Delete the logged-in user's complete chat history."""
+
+    if "user_id" not in session:
+        return jsonify({
+            "success": False,
+            "error": "Please login first."
+        }), 401
+
+    user_id = session["user_id"]
+
+    conn = get_db_connection()
+
+    try:
+        conn.execute(
+            """
+            DELETE FROM chat_history
+            WHERE user_id = ?
+            """,
+            (user_id,)
+        )
+
+        conn.commit()
+
+    finally:
+        conn.close()
+
+    return jsonify({
+        "success": True,
+        "message": "Chat history cleared successfully."
+    })
 
 
 @chatbot.route("/chatbot/message", methods=["POST"])
@@ -88,6 +227,11 @@ def chatbot_message():
         limit=5
     )
 
+    chat_context = get_recent_chat_history(
+        user_id=user_id,
+        limit=6
+    )
+
     latest_emotion = "Unknown"
 
     conn = get_db_connection()
@@ -116,17 +260,38 @@ User name: {session.get("user_name", "User")}
 Recent mood history:
 {mood_context}
 
+Previous conversation:
+{chat_context}
+
 Current user message:
 {user_message}
 
-Use the recent mood history only as supporting context.
-Do not assume that older emotions describe the user's current condition.
-Respond naturally, briefly, safely, and supportively.
+Instructions:
+- Use the previous conversation only when relevant.
+- Do not repeat previous answers unnecessarily.
+- Do not assume older emotions describe the user's current condition.
+- Respond naturally, briefly, safely, and supportively.
+- Do not provide medical diagnosis.
 """
 
-    ai_reply = generate_ai_response(
-        contextual_message,
-        latest_emotion
+    try:
+        ai_reply = generate_ai_response(
+            contextual_message,
+            latest_emotion
+        )
+
+    except Exception as error:
+        print("Chatbot AI error:", error)
+
+        return jsonify({
+            "success": False,
+            "error": "MindAI is unable to respond right now. Please try again."
+        }), 500
+
+    save_chat_history(
+        user_id=user_id,
+        user_message=user_message,
+        ai_reply=ai_reply
     )
 
     return jsonify({

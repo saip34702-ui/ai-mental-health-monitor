@@ -152,6 +152,12 @@
                     ← Back to Dashboard
                 </a>
 
+                <a href="{{ url_for('reports.download_report', filter=filter_type) }}"
+                    class="btn btn-primary">
+                     <i class="fas fa-file-pdf"></i>
+                     Download PDF Report
+                </a>
+
             </div>
 
         </header>

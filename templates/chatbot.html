@@ -2,190 +2,667 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>MindAI | Wellness Assistant</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
 </head>
+
 <body>
+
 <div class="chatbot-layout">
+
     <aside class="chatbot-sidebar">
+
         <div class="brand">
             <div class="brand-icon">🧠</div>
-            <div><h2>MindAI</h2><p>Wellness Companion</p></div>
+
+            <div>
+                <h2>MindAI</h2>
+                <p>Wellness Companion</p>
+            </div>
         </div>
+
         <nav class="sidebar-menu">
-            <a href="/dashboard"><span>🏠</span>Dashboard</a>
-            <a href="/face_detection"><span>😊</span>Face AI</a>
-            <a href="/text_analysis"><span>📝</span>Text AI</a>
-            <a href="/voice_analysis"><span>🎤</span>Voice AI</a>
-            <a href="/chatbot" class="active"><span>💬</span>AI Assistant</a>
-            <a href="/reports"><span>📊</span>Reports</a>
+
+            <a href="/dashboard">
+                <span>🏠</span>
+                Dashboard
+            </a>
+
+            <a href="/face_detection">
+                <span>😊</span>
+                Face AI
+            </a>
+
+            <a href="/text_analysis">
+                <span>📝</span>
+                Text AI
+            </a>
+
+            <a href="/voice_analysis">
+                <span>🎤</span>
+                Voice AI
+            </a>
+
+            <a href="/chatbot" class="active">
+                <span>💬</span>
+                AI Assistant
+            </a>
+
+            <a href="/reports">
+                <span>📊</span>
+                Reports
+            </a>
+
         </nav>
+
         <div class="sidebar-support">
+
             <div class="support-icon">💙</div>
+
             <h4>Private support</h4>
-            <p>Share what is on your mind. MindAI will respond calmly and supportively.</p>
+
+            <p>
+                Share what is on your mind.
+                MindAI will respond calmly and supportively.
+            </p>
+
         </div>
-        <a href="/logout" class="logout"><span>🚪</span>Logout</a>
+
+        <a href="/logout" class="logout">
+            <span>🚪</span>
+            Logout
+        </a>
+
     </aside>
 
+
     <main class="chatbot-main">
+
         <header class="chatbot-header">
+
             <div>
-                <span class="section-label">AI WELLNESS ASSISTANT</span>
+
+                <span class="section-label">
+                    AI WELLNESS ASSISTANT
+                </span>
+
                 <h1>Talk with MindAI</h1>
-                <p>Welcome, {{ name }}. You can talk about stress, studies, emotions, daily problems, or anything that is on your mind.</p>
+
+                <p>
+                    Welcome, {{ name }}. You can talk about stress,
+                    studies, emotions, daily problems, or anything
+                    that is on your mind.
+                </p>
+
             </div>
-            <a href="/dashboard" class="chatbot-back-button">← Back to Dashboard</a>
+
+            <a
+                href="/dashboard"
+                class="chatbot-back-button"
+            >
+                ← Back to Dashboard
+            </a>
+
         </header>
 
+
         <section class="chatbot-card">
+
             <div class="chatbot-status">
+
                 <div class="assistant-profile">
-                    <div class="assistant-avatar">🤖</div>
-                    <div><strong>MindAI Assistant</strong><span><i></i>Online</span></div>
+
+                    <div class="assistant-avatar">
+                        🤖
+                    </div>
+
+                    <div>
+                        <strong>MindAI Assistant</strong>
+
+                        <span>
+                            <i></i>
+                            Online
+                        </span>
+                    </div>
+
                 </div>
-                <button type="button" id="clearChat" class="clear-chat-button">Clear Chat</button>
+
+                <button
+                    type="button"
+                    id="clearChat"
+                    class="clear-chat-button"
+                >
+                    ＋ New Chat
+                </button>
+
             </div>
 
-            <div id="chatMessages" class="chat-messages" aria-live="polite">
+
+            <div
+                id="chatMessages"
+                class="chat-messages"
+                aria-live="polite"
+            >
+
                 <div class="chat-message assistant-message">
-                    <div class="message-avatar">🤖</div>
-                    <div class="message-content">
-                        <span class="message-sender">MindAI</span>
-                        <p>Hi {{ name }}! I am here to listen and support you. How are you feeling today?</p>
+
+                    <div class="message-avatar">
+                        🤖
                     </div>
+
+                    <div class="message-content">
+
+                        <span class="message-sender">
+                            MindAI
+                        </span>
+
+                        <p>
+                            Loading your conversation...
+                        </p>
+
+                    </div>
+
                 </div>
+
             </div>
+
 
             <div class="quick-prompts">
-                <button type="button" data-message="I am feeling stressed about my studies.">Study stress</button>
-                <button type="button" data-message="I am feeling low today.">Feeling low</button>
-                <button type="button" data-message="Help me calm down and relax.">Calm me down</button>
-                <button type="button" data-message="Give me a simple wellness suggestion.">Wellness tip</button>
+
+                <button
+                    type="button"
+                    data-message="I am feeling stressed about my studies."
+                >
+                    Study stress
+                </button>
+
+                <button
+                    type="button"
+                    data-message="I am feeling low today."
+                >
+                    Feeling low
+                </button>
+
+                <button
+                    type="button"
+                    data-message="Help me calm down and relax."
+                >
+                    Calm me down
+                </button>
+
+                <button
+                    type="button"
+                    data-message="Give me a simple wellness suggestion."
+                >
+                    Wellness tip
+                </button>
+
             </div>
 
-            <form id="chatForm" class="chat-input-area">
-                <textarea id="chatInput" maxlength="1500" placeholder="Write your message here..." required></textarea>
+
+            <form
+                id="chatForm"
+                class="chat-input-area"
+            >
+
+                <textarea
+                    id="chatInput"
+                    maxlength="1500"
+                    placeholder="Write your message here..."
+                    required
+                ></textarea>
+
                 <div class="chat-input-footer">
-                    <span id="characterCount">0 / 1500</span>
-                    <button type="submit" id="sendMessageButton">Send Message <span>➤</span></button>
+
+                    <span id="characterCount">
+                        0 / 1500
+                    </span>
+
+                    <button
+                        type="submit"
+                        id="sendMessageButton"
+                    >
+                        Send Message
+                        <span>➤</span>
+                    </button>
+
                 </div>
+
             </form>
 
-            <p class="chatbot-disclaimer">MindAI supports wellness awareness and does not provide medical diagnosis or emergency services.</p>
+
+            <p class="chatbot-disclaimer">
+                MindAI supports wellness awareness and does not
+                provide medical diagnosis or emergency services.
+            </p>
+
         </section>
+
     </main>
+
 </div>
 
+
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
+
     const chatForm = document.getElementById("chatForm");
     const chatInput = document.getElementById("chatInput");
     const chatMessages = document.getElementById("chatMessages");
-    const sendButton = document.getElementById("sendMessageButton");
-    const clearButton = document.getElementById("clearChat");
-    const characterCount = document.getElementById("characterCount");
-    const quickPromptButtons = document.querySelectorAll(".quick-prompts button");
+
+    const sendButton =
+        document.getElementById("sendMessageButton");
+
+    const clearButton =
+        document.getElementById("clearChat");
+
+    const characterCount =
+        document.getElementById("characterCount");
+
+    const quickPromptButtons =
+        document.querySelectorAll(".quick-prompts button");
+
 
     function scrollToLatestMessage() {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        chatMessages.scrollTop =
+            chatMessages.scrollHeight;
     }
 
+
     function createMessage(message, sender) {
-        const wrapper = document.createElement("div");
-        wrapper.className = "chat-message " + (sender === "user" ? "user-message" : "assistant-message");
 
-        const avatar = document.createElement("div");
-        avatar.className = "message-avatar";
-        avatar.textContent = sender === "user" ? "👤" : "🤖";
+        const wrapper =
+            document.createElement("div");
 
-        const content = document.createElement("div");
-        content.className = "message-content";
+        wrapper.className =
+            "chat-message " +
+            (
+                sender === "user"
+                    ? "user-message"
+                    : "assistant-message"
+            );
 
-        const senderLabel = document.createElement("span");
-        senderLabel.className = "message-sender";
-        senderLabel.textContent = sender === "user" ? "You" : "MindAI";
 
-        const messageText = document.createElement("p");
-        messageText.textContent = message;
+        const avatar =
+            document.createElement("div");
+
+        avatar.className =
+            "message-avatar";
+
+        avatar.textContent =
+            sender === "user"
+                ? "👤"
+                : "🤖";
+
+
+        const content =
+            document.createElement("div");
+
+        content.className =
+            "message-content";
+
+
+        const senderLabel =
+            document.createElement("span");
+
+        senderLabel.className =
+            "message-sender";
+
+        senderLabel.textContent =
+            sender === "user"
+                ? "You"
+                : "MindAI";
+
+
+        const messageText =
+            document.createElement("p");
+
+        messageText.textContent =
+            message;
+
 
         content.appendChild(senderLabel);
         content.appendChild(messageText);
+
         wrapper.appendChild(avatar);
         wrapper.appendChild(content);
+
         chatMessages.appendChild(wrapper);
+
         scrollToLatestMessage();
+
         return wrapper;
     }
 
-    async function sendMessage(message) {
-        const cleanMessage = String(message || "").trim();
-        if (!cleanMessage) return;
 
-        createMessage(cleanMessage, "user");
-        chatInput.value = "";
-        characterCount.textContent = "0 / 1500";
-        sendButton.disabled = true;
-        sendButton.textContent = "MindAI is typing...";
-        const typingIndicator = createMessage("Thinking...", "assistant");
+    function showWelcomeMessage() {
+
+        chatMessages.innerHTML = "";
+
+        createMessage(
+            "Hi {{ name }}! I am here to listen and support you. How are you feeling today?",
+            "assistant"
+        );
+    }
+
+
+    async function loadChatHistory() {
 
         try {
-            const response = await fetch("/chatbot/message", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({message: cleanMessage})
-            });
 
-            const data = await response.json();
-            typingIndicator.remove();
+            const response =
+                await fetch("/chatbot/history");
 
-            if (!response.ok) {
-                createMessage(data.error || "Unable to send your message.", "assistant");
+            const data =
+                await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                showWelcomeMessage();
+
                 return;
             }
 
-            createMessage(data.reply || "I am here with you.", "assistant");
+
+            chatMessages.innerHTML = "";
+
+
+            if (!data.history || data.history.length === 0) {
+
+                showWelcomeMessage();
+
+                return;
+            }
+
+
+            data.history.forEach(function (chat) {
+
+                createMessage(
+                    chat.user_message,
+                    "user"
+                );
+
+                createMessage(
+                    chat.ai_reply,
+                    "assistant"
+                );
+
+            });
+
+
+            scrollToLatestMessage();
+
         } catch (error) {
+
+            console.error(
+                "History loading error:",
+                error
+            );
+
+            showWelcomeMessage();
+        }
+    }
+
+
+    async function sendMessage(message) {
+
+        const cleanMessage =
+            String(message || "").trim();
+
+
+        if (!cleanMessage) {
+            return;
+        }
+
+
+        createMessage(
+            cleanMessage,
+            "user"
+        );
+
+
+        chatInput.value = "";
+
+        characterCount.textContent =
+            "0 / 1500";
+
+
+        sendButton.disabled = true;
+
+        sendButton.textContent =
+            "MindAI is typing...";
+
+
+        const typingIndicator =
+            createMessage(
+                "Thinking...",
+                "assistant"
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/chatbot/message",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            message: cleanMessage
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
             typingIndicator.remove();
-            createMessage("MindAI is unavailable right now. Please try again.", "assistant");
+
+
+            if (!response.ok || !data.success) {
+
+                createMessage(
+                    data.error ||
+                    "Unable to send your message.",
+                    "assistant"
+                );
+
+                return;
+            }
+
+
+            createMessage(
+                data.reply ||
+                "I am here with you.",
+                "assistant"
+            );
+
+        } catch (error) {
+
+            typingIndicator.remove();
+
+
+            createMessage(
+                "MindAI is unavailable right now. Please try again.",
+                "assistant"
+            );
+
         } finally {
+
             sendButton.disabled = false;
-            sendButton.innerHTML = 'Send Message <span>➤</span>';
+
+            sendButton.innerHTML =
+                'Send Message <span>➤</span>';
+
             chatInput.focus();
         }
     }
 
-    chatForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        sendMessage(chatInput.value);
-    });
 
-    chatInput.addEventListener("input", function () {
-        characterCount.textContent = chatInput.value.length + " / 1500";
-    });
+    async function startNewChat() {
 
-    chatInput.addEventListener("keydown", function (event) {
-        if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            chatForm.requestSubmit();
+        const confirmed = window.confirm(
+            "Start a new chat? Your previous chat history will be deleted."
+        );
+
+
+        if (!confirmed) {
+            return;
         }
-    });
 
-    quickPromptButtons.forEach(function (button) {
-        button.addEventListener("click", function () {
-            sendMessage(button.dataset.message);
-        });
-    });
 
-    clearButton.addEventListener("click", function () {
-        chatMessages.innerHTML = "";
-        createMessage("Chat cleared. How can I support you now?", "assistant");
-    });
+        clearButton.disabled = true;
 
-    scrollToLatestMessage();
+        clearButton.textContent =
+            "Starting...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/chatbot/clear",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                alert(
+                    data.error ||
+                    "Unable to start a new chat."
+                );
+
+                return;
+            }
+
+
+            showWelcomeMessage();
+
+            chatInput.value = "";
+
+            characterCount.textContent =
+                "0 / 1500";
+
+            chatInput.focus();
+
+        } catch (error) {
+
+            alert(
+                "Unable to start a new chat right now."
+            );
+
+        } finally {
+
+            clearButton.disabled = false;
+
+            clearButton.textContent =
+                "＋ New Chat";
+        }
+    }
+
+
+    chatForm.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+            sendMessage(
+                chatInput.value
+            );
+        }
+    );
+
+
+    chatInput.addEventListener(
+        "input",
+        function () {
+
+            characterCount.textContent =
+                chatInput.value.length +
+                " / 1500";
+        }
+    );
+
+
+    chatInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                chatForm.requestSubmit();
+            }
+        }
+    );
+
+
+    quickPromptButtons.forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    sendMessage(
+                        button.dataset.message
+                    );
+                }
+            );
+        }
+    );
+
+
+    clearButton.addEventListener(
+        "click",
+        startNewChat
+    );
+
+
+    loadChatHistory();
+
     chatInput.focus();
+
 });
+
 </script>
+
 </body>
 </html>
